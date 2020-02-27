@@ -39,6 +39,20 @@ public class DepartmentService {
         hashMap.put(1, new Department(1, "google"));
         hashMap.put(2, new Department(2, "amazon"));
     }
+    
+     @SuppressWarnings(value = "unchecked")
+    private void loadInitialDepartmentData() {
+        JSONArray departmentList = (JSONArray) object;
+        departmentList.forEach(dep -> parseDepartmentObject((JSONObject) dep));
+    }
+
+    private void parseDepartmentObject(JSONObject department) {
+        JSONObject departmentObject = (JSONObject) department.get("department");
+        Integer depId = counter.incrementAndGet();
+        String name = (String) departmentObject.get("name");
+        Department depObj = new Department(depId, name);
+        hashMap.put(depId, depObj);
+    }
 
     public void createEmployeeServiceObject(EmployeeService employeeService) {
         this.employeeService = employeeService;
@@ -123,20 +137,6 @@ public class DepartmentService {
             throw new DepartmentNotFound();
         }
         return true;
-    }
-
-    @SuppressWarnings(value = "unchecked")
-    private void loadInitialDepartmentData() {
-        JSONArray departmentList = (JSONArray) object;
-        departmentList.forEach(dep -> parseDepartmentObject((JSONObject) dep));
-    }
-
-    private void parseDepartmentObject(JSONObject department) {
-        JSONObject departmentObject = (JSONObject) department.get("department");
-        Integer depId = counter.incrementAndGet();
-        String name = (String) departmentObject.get("name");
-        Department depObj = new Department(depId, name);
-        hashMap.put(depId, depObj);
     }
 }
 
