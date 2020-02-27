@@ -203,13 +203,3 @@ public class DepartmentResourceTest extends BaseResourceTest{
         return DEPARTMENT_SERVICE;
     }
 }
-
-
-
-
-
-
-    /*@Before
-    public void before(){
-         populateStubData();
-    }*/
