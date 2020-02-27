@@ -28,6 +28,27 @@ public class EmployeeResource {
         this.validator = validator;
         this.employeeService = employeeService;
     }
+    
+    @POST
+    public Response createEmployee(@Valid Employee employee){
+        try {
+            employeeService.createEmployee(employee);
+            return Response.created(new URI("/employees/")).entity(employee).build();
+        }
+        catch (DepartmentNotFound exp){
+            StringBuilder message = new StringBuilder("Department ");
+            return  Response.status(Response.Status.BAD_REQUEST)
+                            .entity(new ApiStatus(Response.Status.BAD_REQUEST.getStatusCode(),
+                                    message.append(employee.getDepId()).append(" not exists").toString()))
+                            .type(MediaType.APPLICATION_JSON).build();
+        }
+        catch (Exception ex){
+            return  Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                            .entity(new ApiStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
+                                         "Internal Server Error"))
+                            .type(MediaType.APPLICATION_JSON).build();
+        }
+    }
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -65,27 +86,6 @@ public class EmployeeResource {
         }
         catch (Exception e) {
              return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                            .entity(new ApiStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
-                                         "Internal Server Error"))
-                            .type(MediaType.APPLICATION_JSON).build();
-        }
-    }
-
-    @POST
-    public Response createEmployee(@Valid Employee employee){
-        try {
-            employeeService.createEmployee(employee);
-            return Response.created(new URI("/employees/")).entity(employee).build();
-        }
-        catch (DepartmentNotFound exp){
-            StringBuilder message = new StringBuilder("Department ");
-            return  Response.status(Response.Status.BAD_REQUEST)
-                            .entity(new ApiStatus(Response.Status.BAD_REQUEST.getStatusCode(),
-                                    message.append(employee.getDepId()).append(" not exists").toString()))
-                            .type(MediaType.APPLICATION_JSON).build();
-        }
-        catch (Exception ex){
-            return  Response.status(Response.Status.INTERNAL_SERVER_ERROR)
                             .entity(new ApiStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
                                          "Internal Server Error"))
                             .type(MediaType.APPLICATION_JSON).build();
@@ -142,17 +142,3 @@ public class EmployeeResource {
         }
    }
 }
-
-
-
-
-/*
- Set<ConstraintViolation<Employee>> violations = validator.validate(employee);
-        if (violations.size() > 0) {
-            ArrayList<String> validationMessages = new ArrayList<String>();
-            for (ConstraintViolation<Employee> violation : violations) {
-                validationMessages.add(violation.getPropertyPath().toString() + ": " + violation.getMessage());
-            }
-            return Response.status(Response.Status.BAD_REQUEST).entity(validationMessages).build();
-        }
- */
