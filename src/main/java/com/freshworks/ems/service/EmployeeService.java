@@ -25,6 +25,13 @@ public class EmployeeService {
         hashMap = new HashMap<>();
         this.departmentService = departmentService;
     }
+    
+    private boolean isEmployeeExists(Integer empId) throws EmployeeNotFound {
+        if(!hashMap.containsKey(empId)) {
+            throw new EmployeeNotFound();
+        }
+        return true;
+    }
 
     public List<Employee> getAllEmployees(String attribute) {
         if(attribute.isEmpty()) {
@@ -125,13 +132,6 @@ public class EmployeeService {
            throw new IllegalArgumentException();
         }
         return employeeList;
-    }
-
-    private boolean isEmployeeExists(Integer empId) throws EmployeeNotFound {
-        if(!hashMap.containsKey(empId)) {
-            throw new EmployeeNotFound();
-        }
-        return true;
     }
 
     public void addEmployeeForTests(Employee employee){
