@@ -40,7 +40,7 @@ public class DepartmentService {
         hashMap.put(2, new Department(2, "amazon"));
     }
     
-     @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings(value = "unchecked")
     private void loadInitialDepartmentData() {
         JSONArray departmentList = (JSONArray) object;
         departmentList.forEach(dep -> parseDepartmentObject((JSONObject) dep));
