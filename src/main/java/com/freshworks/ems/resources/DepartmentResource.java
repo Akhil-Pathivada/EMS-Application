@@ -40,9 +40,9 @@ public class DepartmentResource {
         }
         catch (Exception e){
             return  Response.status(Response.Status.INTERNAL_SERVER_ERROR)
-                    .entity(new ApiStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
-                            "Internal Server Error"))
-                    .type(MediaType.APPLICATION_JSON).build();
+                            .entity(new ApiStatus(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),
+                                    "Internal Server Error"))
+                            .type(MediaType.APPLICATION_JSON).build();
         }
     }
 
